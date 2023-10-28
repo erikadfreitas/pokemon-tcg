@@ -1,0 +1,100 @@
+<div class="title">
+  <span>Criar Baralho</span>
+</div>
+
+<div class="p-4">
+  <form>
+    <div class="mb-4">
+      <label for="deckName" class="block text-sm font-medium">Nome do Baralho</label>
+      <igx-input-group type="border">
+        <input igxInput [(ngModel)]="deckName" id="deckName" name="deckName" placeholder="">
+      </igx-input-group>
+    </div>
+
+    <div class="mb-4">
+      <label for="search" class="block text-sm font-medium">Pesquisar Cartas</label>
+      <div class="flex w-full">
+        <div class="w-11/12 mr-2">
+          <igx-input-group type="border">
+            <input igxInput [(ngModel)]="searchTermValue" id="search" name="search" placeholder="Nome da Carta">
+          </igx-input-group>
+        </div>
+        <div class="w-1/12">
+          <button (click)="loadCards()" class="h-full w-full bg-blue-800 hover:bg-blue-900 text-white py-2 rounded">
+            <igx-icon>search</igx-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="cards" class="block text-sm font-medium">Cartas</label>
+      <igx-select id="cards" type="border" [disabled]="cards.length === 0"
+                  placeholder="Pesquise cartas para filtrá-las aqui">
+        <igx-prefix *ngIf="loading">
+          <div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-800"></div>
+        </igx-prefix>
+        <igx-select-item-group *ngFor="let supertype of supertypes" [label]="supertype" [hidden]="howManyCardsBySupertype(supertype) === 0">
+          <igx-select-item *ngFor="let card of filteredCardsBySupertype(supertype)" [value]="card" [text]="card.name" (click)="addToSelectedCards(card)">
+            <span>{{card.name}} - HP: {{card.hp}} - Tipos: {{card.types?.join(', ')}} - Subtipos: {{card.subtypes?.join(', ')}} - Versão: {{card.set.name}}</span>
+            <igx-suffix>
+              <img src="{{card.images.small}}" alt="{{card.name}}" class="h-9 w-auto mr-4"/>
+            </igx-suffix>
+          </igx-select-item>
+        </igx-select-item-group>
+      </igx-select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Cartas Selecionadas</label>
+      <label class="block text-sm font-medium small-label-neutral">
+        Você está montando um baralho com {{selectedCards.length}} carta(s).
+      </label>
+      <label class="block text-sm font-medium small-label-neutral" *ngIf="selectedCards.length < MIN_NUMBER_OF_CARDS">
+        Para criar o baralho, escolha, ao menos, mais {{MIN_NUMBER_OF_CARDS - selectedCards.length}} carta(s).
+      </label>
+      <label class="block text-sm font-medium small-label-positive" *ngIf="(selectedCards.length >= MIN_NUMBER_OF_CARDS) && (selectedCards.length < MAX_NUMBER_OF_CARDS)">
+        O baralho já tem cartas suficientes para ser criado, mas você ainda pode incluir mais {{MAX_NUMBER_OF_CARDS - selectedCards.length}}!
+      </label>
+      <label class="block text-sm font-medium small-label-positive" *ngIf="(selectedCards.length >= MIN_NUMBER_OF_CARDS) && (selectedCards.length === MAX_NUMBER_OF_CARDS)">
+        O baralho já tem cartas suficientes para ser criado!
+      </label>
+      <label class="block text-sm font-medium small-label-negative" *ngIf="selectedCards.length > MAX_NUMBER_OF_CARDS">
+        Ops... Seu baralho tem mais cartas do que o permitido! Remova, pelo menos, {{selectedCards.length - MAX_NUMBER_OF_CARDS}} carta(s) dele.
+      </label>
+      <div class="flex flex-wrap">
+        <div *ngFor="let card of selectedCards" class="selected-card m-4">
+          <div class="image-container">
+            <img [src]="card.images.small" alt="{{card.name}}" class="h-48 w-auto">
+            <div class="button-container">
+              <button class="zoom-button bg-blue-800 hover:bg-blue-900 rounded" (click)="openImage(card)">Ampliar
+              </button>
+              <button (click)="removeFromSelectedCards(card)" class="remove-button bg-red-600 hover:bg-red-700 rounded">
+                Remover
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="imageOverlay" #imageOverlay (click)="closeImage()">
+      <div class="image-popup">
+        <img id="popupImage" src="" alt="" #popupImage>
+      </div>
+    </div>
+
+    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 mr-4 rounded" (click)="submit()">
+      Enviar
+    </button>
+    <button type="button" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded" (click)="navigateToList()">
+      Voltar
+    </button>
+  </form>
+</div>
+
+<igx-toast #toastMinLetters class="toast-warning">Informe, no mínimo, três letras para pesquisar as cartas!</igx-toast>
+<igx-toast #toastNoCards class="toast-warning">Não foram encontradas cartas para a pesquisa "{{searchTermValue}}"!</igx-toast>
+<igx-toast #toastMaxCardsWithTheSameName class="toast-warning"></igx-toast>
+<igx-toast #toastSubmitWarning class="toast-warning"></igx-toast>
+<igx-toast #toastSubmitSuccess class="toast-success">It's super effective! Baralho criado com sucesso! Redirecionando...</igx-toast>

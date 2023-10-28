@@ -1,18 +1,19 @@
-<!--<h1 class="text-3xl font-bold underline">-->
-<!--  Hello world!-->
-<!--</h1>-->
-
-<div class="text-center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
+<div class="top-menu">
+  <div class="pokeball">
+    <div class="outer-circle">
+      <div class="inner-circle"></div>
+    </div>
+    <img src="./assets/images/logo.svg" alt="">
+  </div>
 </div>
 
-<div style="text-align: center;">
-  <igx-grid [data]="localData" width="600px" height="400px" style="margin: auto" [allowFiltering]="true">
-    <igx-column field="Name" dataType="string"></igx-column>
-    <igx-column field="Age" dataType="number"></igx-column>
-  </igx-grid>
-</div>
+<main class="flex-grow p-4 mt-10 mb-10">
+  <router-outlet></router-outlet>
+</main>
 
-<router-outlet></router-outlet>
+<div class="bottom-menu">
+  <div class="typing-container">
+    <p class="typing-text">A wild DEVELOPER appears!</p>
+  </div>
+  <img id="erika-image" src="./assets/images/erika.png" alt="Érika">
+</div>

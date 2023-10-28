@@ -1,0 +1,133 @@
+.top-menu {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #CC0D2A;
+  border-bottom: 4px solid #000000;
+  height: 65px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .pokeball {
+    position: relative;
+    .outer-circle {
+      background-color: white;
+      border: 4px solid #000000;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 114%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .inner-circle {
+        border: 1px solid rgba(51, 51, 51, 0.2);
+        box-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    img {
+      height: 50px;
+      position: relative;
+    }
+  }
+}
+
+.top-menu {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #CC0D2A;
+  border-bottom: 4px solid #000000;
+  height: 65px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .pokeball {
+    position: relative;
+    .outer-circle {
+      background-color: white;
+      border: 4px solid #000000;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 114%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .inner-circle {
+        border: 1px solid rgba(51, 51, 51, 0.2);
+        box-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    img {
+      height: 50px;
+      position: relative;
+    }
+  }
+}
+
+.bottom-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #CC0D2A;
+  border-top: 3px solid #000000;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+.typing-container {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.typing-text {
+  font-size: 10px;
+  margin-right: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 2s steps(40, end) 1 normal both;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.repeat-animation .typing-text {
+  animation-play-state: running;
+}
+
+#erika-image {
+  height: 0;
+  transition: height 1s ease;
+}
+
