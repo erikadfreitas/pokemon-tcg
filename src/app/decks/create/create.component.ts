@@ -18,7 +18,7 @@ export class CreateComponent implements OnInit {
   public selectedCards: any[] = [];
   public loading: boolean = false;
   public showImage: boolean = false;
-  readonly MIN_NUMBER_OF_CARDS: number = 24;
+  readonly MIN_NUMBER_OF_CARDS: number = 1;
   readonly MAX_NUMBER_OF_CARDS: number = 60;
 
   @ViewChild('toastMinLetters', {read: IgxToastComponent}) public toastMinLetters: IgxToastComponent | any;
@@ -72,7 +72,7 @@ export class CreateComponent implements OnInit {
 
     if (nameCount === 4) {
       this.toastMaxCardsWithTheSameName.positionSettings.verticalDirection = VerticalAlignment.Middle;
-      this.toastMaxCardsWithTheSameName.open('Carta não adicionada! Seu baralho já possui quatro cartas com o nome "' + card.name + '".');
+      this.toastMaxCardsWithTheSameName.open('Carta não adicionada! Seu baralho já possui 4 cartas com o nome "' + card.name + '".');
     } else {
       this.selectedCards.push(card);
       this.selectedCards.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -119,12 +119,12 @@ export class CreateComponent implements OnInit {
     }
 
     if (this.selectedCards.length < this.MIN_NUMBER_OF_CARDS) {
-      this.toastSubmitWarning.open('Não é permitida a criação de baralhos com menos de ' + this.MIN_NUMBER_OF_CARDS + ' cartas!');
+      this.toastSubmitWarning.open('Não é permitida a criação de baralhos com menos de ' + this.MIN_NUMBER_OF_CARDS + ' carta(s)!');
       return;
     }
 
     if (this.selectedCards.length > this.MAX_NUMBER_OF_CARDS) {
-      this.toastSubmitWarning.open('Não é permitida a criação de baralhos com mais de ' + this.MAX_NUMBER_OF_CARDS + ' cartas!');
+      this.toastSubmitWarning.open('Não é permitida a criação de baralhos com mais de ' + this.MAX_NUMBER_OF_CARDS + ' carta(s)!');
       return;
     }
 

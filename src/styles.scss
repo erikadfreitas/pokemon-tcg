@@ -1,17 +1,9 @@
-@use "igniteui-angular/theming" as *;
-// Uncomment the following lines if you want to add a custom palette:
-// $primary: #731963 !default;
-// $secondary: #ce5712 !default;
-// $app-palette: palette($primary, $secondary, $surface);
-
-/* autoprefixer grid: on */
+//@use "igniteui-angular/theming" as *;
+@import 'igniteui-angular/lib/core/styles/themes/index';
 
 @include core();
 @include typography($font-family: $material-typeface, $type-scale: $material-type-scale);
 @include theme($default-palette);
-// CSS Reset, comment out if not required or using a different module
-@import 'minireset.css/minireset';
-/* You can add global styles to this file, and also import other style files */
 
 @tailwind base;
 @tailwind components;
@@ -20,14 +12,24 @@
 :root {
   --ig-font-family: "Press Start 2P", cursive;
   --ig-subtitle-1-font-size: 8px;
-  .igx-grid__td,
+
   .igx-grid-thead__title,
   .igx-grid-th,
   .igx-paginator,
   .igx-input-group--border,
-  .igx-input-group__bundle-main
-  {
+  .igx-input-group__bundle-main,
+  .igx-chip__item {
     font-size: 8px;
+  }
+
+  .igx-grid__td {
+    display: grid;
+    font-size: 8px;
+  }
+
+  .igx-grid__td--active {
+    //background-color: red;
+    box-shadow: unset;
   }
 
   .igx-drop-down__item {
@@ -48,6 +50,38 @@
     }
   }
 
+  .igx-button {
+    text-transform: none;
+    font-weight: 400;
+    font-size: 10px;
+    border-radius: unset;
+  }
+
+  .igx-drop-down__group label {
+    color: #2E6DB5;
+  }
+
+  .igx-dialog__window-title {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: 400;
+    color: #2E6DB5;
+  }
+
+  .igx-dialog__window-message {
+    font-size: 12px;
+    text-transform: none;
+    font-weight: 400;
+    color: #333333;
+  }
+
+  @media (max-width: 640px) {
+    .igx-dialog__window {
+      max-width: 55% !important;
+      margin: 5% auto !important;
+    }
+  }
+
   .toast-warning {
     background-color: #FFCB05;
     color: #333333;
@@ -62,10 +96,10 @@
     background-color: #2E6DB5;
     color: #FFFFFF;
   }
+}
 
-  .igx-drop-down__group label {
-    color: #2E6DB5;
-  }
+button {
+  font-size: 10px;
 }
 
 .nav-border {
@@ -73,7 +107,7 @@
 }
 
 .title {
-  color: #333333;
+  color: #2E6DB5;
   margin-top: 2.25rem;
   margin-left: 1.25rem;
   margin-bottom: 1.25rem;
@@ -99,39 +133,3 @@ label {
   font-size: 8px;
   color: #CC0D2A;
 }
-//
-//.typing-text {
-//  display: inline-block;
-//  left: -2px;
-//  top: -2px;
-//  width: 0;
-//  height: 1.3em;
-//  background: #2B72B9;
-//  white-space: nowrap;
-//}
-//
-//.typing-text:hover {
-//  width: 14.8em;
-//  color: #FFCB05;
-//  border-right: 2px solid #EF4444;
-//  animation: type 1s steps(8, end),
-//  blink 1.1s linear 1s infinite;
-//  animation-fill-mode: forwards;
-//}
-//
-//@keyframes type {
-//  from {
-//    width: 0;
-//  }
-//}
-//
-//@keyframes blink {
-//  45% {
-//    border-right: 2px solid white;
-//  }
-//  100% {
-//    border-right: 2px solid white;
-//  }
-//}
-
-

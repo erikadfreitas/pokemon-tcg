@@ -25,7 +25,7 @@ export class StoreService {
     localStorage.setItem(nextDeckKey, JSON.stringify(data));
   }
 
-  getAllDeckObjects(): { [key: string]: any } {
+  getAllDeckObjects(): object {
     const deckKeys = Object.keys(localStorage).filter(key => key.startsWith('deck'));
     const deckObjects: { [key: string]: any } = {};
 
@@ -37,5 +37,9 @@ export class StoreService {
     });
 
     return deckObjects;
+  }
+
+  deleteDeck(deckKey: string) {
+    localStorage.removeItem(deckKey);
   }
 }

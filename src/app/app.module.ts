@@ -11,7 +11,12 @@ import {
   IgxSelectItemComponent,
   IgxSwitchComponent,
   IgxIconModule,
-  IgxInputGroupModule, IgxToastComponent, IgxToggleDirective, IgxSelectGroupComponent,
+  IgxInputGroupModule,
+  IgxToastComponent,
+  IgxToggleDirective,
+  IgxSelectGroupComponent,
+  IgxBadgeComponent,
+  IgxDialogComponent,
 } from "igniteui-angular";
 import {DecksComponent} from './decks/decks.component';
 import {CardsComponent} from './cards/cards.component';
@@ -19,13 +24,17 @@ import {PokemonTcgService} from "./pokemon-tcg.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {CreateComponent} from './decks/create/create.component';
+import { ErrorComponent } from './error/error.component';
+import { EditComponent } from './decks/edit/edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DecksComponent,
     CardsComponent,
-    CreateComponent
+    CreateComponent,
+    ErrorComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +51,9 @@ import {CreateComponent} from './decks/create/create.component';
     IgxInputGroupModule,
     IgxToastComponent,
     IgxToggleDirective,
-    IgxSelectGroupComponent
+    IgxSelectGroupComponent,
+    IgxBadgeComponent,
+    IgxDialogComponent
   ],
   providers: [
     PokemonTcgService

@@ -8,18 +8,6 @@
   position: relative;
 }
 
-.button-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(51, 51, 51, 0.8);
-  padding: 7px;
-  border: 1px solid #333333;
-  border-radius: 5px;
-}
-
 .zoom-button {
   margin-bottom: 5px;
   padding: 5px;
@@ -47,11 +35,18 @@
   top: 0;
   left: 0;
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
   transition: opacity 0.2s;
+  bottom: 0;
+  flex-direction: column;
+  background-color: rgba(51, 51, 51, 0.8);
+  padding: 7px;
+  border: 1px solid #333333;
+  border-radius: 5px;
 }
 
 .image-container:hover .button-container {
@@ -88,4 +83,3 @@
   margin: 0 auto;
   max-height: 500px;
 }
-

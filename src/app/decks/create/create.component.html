@@ -1,5 +1,11 @@
-<div class="title">
-  <span>Criar Baralho</span>
+<div class="flex justify-between items-center">
+  <div class="title">
+    <span>Criar Baralho</span>
+  </div>
+
+  <button class="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 mt-9 mr-5 mb-5" (click)="navigateToList()">
+    Voltar
+  </button>
 </div>
 
 <div class="p-4">
@@ -20,7 +26,7 @@
           </igx-input-group>
         </div>
         <div class="w-1/12">
-          <button (click)="loadCards()" class="h-full w-full bg-blue-800 hover:bg-blue-900 text-white py-2 rounded">
+          <button (click)="loadCards()" class="h-full w-full bg-blue-800 hover:bg-blue-900 text-white py-2">
             <igx-icon>search</igx-icon>
           </button>
         </div>
@@ -32,11 +38,11 @@
       <igx-select id="cards" type="border" [disabled]="cards.length === 0"
                   placeholder="Pesquise cartas para filtrá-las aqui">
         <igx-prefix *ngIf="loading">
-          <div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-800"></div>
+          <div class="animate-spin-full h-5 w-5 border-t-2 border-b-2 border-blue-800"></div>
         </igx-prefix>
         <igx-select-item-group *ngFor="let supertype of supertypes" [label]="supertype" [hidden]="howManyCardsBySupertype(supertype) === 0">
           <igx-select-item *ngFor="let card of filteredCardsBySupertype(supertype)" [value]="card" [text]="card.name" (click)="addToSelectedCards(card)">
-            <span>{{card.name}} - HP: {{card.hp}} - Tipos: {{card.types?.join(', ')}} - Subtipos: {{card.subtypes?.join(', ')}} - Versão: {{card.set.name}}</span>
+            <span>{{card.name}} - HP: {{card.hp ? card.hp : 'N/A'}} - Tipos: {{card.types ? card.types.join(', ') : 'N/A'}} - Subtipos: {{card.subtypes ? card.subtypes.join(', ') : 'N/A'}} - Set: {{card.set.name}}</span>
             <igx-suffix>
               <img src="{{card.images.small}}" alt="{{card.name}}" class="h-9 w-auto mr-4"/>
             </igx-suffix>
@@ -67,9 +73,9 @@
           <div class="image-container">
             <img [src]="card.images.small" alt="{{card.name}}" class="h-48 w-auto">
             <div class="button-container">
-              <button class="zoom-button bg-blue-800 hover:bg-blue-900 rounded" (click)="openImage(card)">Ampliar
+              <button class="zoom-button bg-blue-800 hover:bg-blue-900" (click)="openImage(card)">Ampliar
               </button>
-              <button (click)="removeFromSelectedCards(card)" class="remove-button bg-red-600 hover:bg-red-700 rounded">
+              <button (click)="removeFromSelectedCards(card)" class="remove-button bg-red-600 hover:bg-red-700">
                 Remover
               </button>
             </div>
@@ -84,17 +90,14 @@
       </div>
     </div>
 
-    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 mr-4 rounded" (click)="submit()">
+    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 mr-4" (click)="submit()">
       Enviar
-    </button>
-    <button type="button" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded" (click)="navigateToList()">
-      Voltar
     </button>
   </form>
 </div>
 
-<igx-toast #toastMinLetters class="toast-warning">Informe, no mínimo, três letras para pesquisar as cartas!</igx-toast>
-<igx-toast #toastNoCards class="toast-warning">Não foram encontradas cartas para a pesquisa "{{searchTermValue}}"!</igx-toast>
+<igx-toast #toastMinLetters class="toast-warning">Informe, no mínimo, 3 letras para pesquisar as cartas!</igx-toast>
+<igx-toast #toastNoCards class="toast-warning">Não foram encontradas cartas<br/>para a pesquisa "{{searchTermValue}}"!</igx-toast>
 <igx-toast #toastMaxCardsWithTheSameName class="toast-warning"></igx-toast>
 <igx-toast #toastSubmitWarning class="toast-warning"></igx-toast>
-<igx-toast #toastSubmitSuccess class="toast-success">It's super effective! Baralho criado com sucesso! Redirecionando...</igx-toast>
+<igx-toast #toastSubmitSuccess class="toast-success">It's super effective!<br/>Baralho criado com sucesso!<br/>Redirecionando...</igx-toast>
