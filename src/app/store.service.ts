@@ -20,9 +20,13 @@ export class StoreService {
     }
   }
 
-  createOrUpdateDeck(data: object): void {
-    const nextDeckKey = this.getNextDeckKey();
-    localStorage.setItem(nextDeckKey, JSON.stringify(data));
+  createOrUpdateDeck(data: object, deckKey?: string): void {
+    if (deckKey) {
+      localStorage.setItem(deckKey, JSON.stringify(data));
+    } else {
+      const nextDeckKey = this.getNextDeckKey();
+      localStorage.setItem(nextDeckKey, JSON.stringify(data));
+    }
   }
 
   getAllDeckObjects(): object {
@@ -37,6 +41,19 @@ export class StoreService {
     });
 
     return deckObjects;
+  }
+
+  getDeckByKey(deckKey: string): object | null {
+    const value = localStorage.getItem(deckKey);
+    if (value === null) {
+     return null;
+    }
+    return JSON.parse(value);
+  }
+
+  checkIfDeckExistsByKey(deckKey: string): boolean {
+    const deck = localStorage.getItem(deckKey);
+    return !!deck;
   }
 
   deleteDeck(deckKey: string) {

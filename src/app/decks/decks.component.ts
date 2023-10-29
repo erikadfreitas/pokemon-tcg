@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {PokemonTcgService} from "../pokemon-tcg.service";
 import {StoreService} from "../store.service";
 import {Router} from "@angular/router";
 import {IgxDialogComponent, IgxGridComponent, IgxToastComponent, VerticalAlignment} from "igniteui-angular";
@@ -18,8 +17,7 @@ export class DecksComponent implements OnInit {
   @ViewChild('dialog', {static: true}) dialog: IgxDialogComponent | undefined;
   @ViewChild('toastSubmitSuccess', {read: IgxToastComponent}) public toastSubmitSuccess: IgxToastComponent | any;
 
-  constructor(private pokemonService: PokemonTcgService,
-              private storeService: StoreService,
+  constructor(private storeService: StoreService,
               private router: Router) {
   }
 
@@ -48,8 +46,8 @@ export class DecksComponent implements OnInit {
     this.router.navigate(['/decks/create']);
   }
 
-  editItem(id: any): void {
-    console.log(id)
+  editItem(deckKey: string): void {
+    this.router.navigate(['/decks/edit', deckKey]);
   }
 
   openDeleteConfirmation(deck: any): void {

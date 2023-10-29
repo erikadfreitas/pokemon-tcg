@@ -38,7 +38,7 @@ export class CreateComponent implements OnInit {
     this.loadSupertypes();
   }
 
-  loadCards() {
+  loadCards(): void {
     if (this.searchTermValue.length >= 3) {
       this.cards = [];
       this.loading = true;
@@ -61,13 +61,13 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  loadSupertypes() {
+  loadSupertypes(): void {
     this.pokemonService.getSupertypes().subscribe(data => {
       this.supertypes = data.data;
     })
   }
 
-  addToSelectedCards(card: any) {
+  addToSelectedCards(card: any): void {
     const nameCount = this.selectedCards.filter(selectedCard => selectedCard.name === card.name).length;
 
     if (nameCount === 4) {
@@ -80,7 +80,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  removeFromSelectedCards(card: any) {
+  removeFromSelectedCards(card: any): void {
     this.selectedCards = this.selectedCards.filter(c => c !== card);
     if (card.name.toLowerCase().includes(this.lastSearchTermValue.toLowerCase())) {
       this.cards.push(card);
@@ -88,7 +88,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  openImage(card: { images: { large: any; }; }) {
+  openImage(card: { images: { large: any; }; }): void {
     this.showImage = true;
     const imageOverlay = this.imageOverlay.nativeElement;
     const popupImage = this.popupImage.nativeElement;
@@ -97,7 +97,7 @@ export class CreateComponent implements OnInit {
     imageOverlay.style.display = 'flex';
   }
 
-  closeImage() {
+  closeImage(): void {
     this.showImage = false;
     this.imageOverlay.nativeElement.style.display = 'none';
   }
@@ -110,7 +110,7 @@ export class CreateComponent implements OnInit {
     return this.cards.filter(card => card.supertype === supertype).length;
   }
 
-  submit() {
+  submit(): void {
     this.toastSubmitWarning.positionSettings.verticalDirection = VerticalAlignment.Middle;
 
     if (this.deckName === '') {
@@ -141,7 +141,7 @@ export class CreateComponent implements OnInit {
     }, 3000);
   }
 
-  navigateToList() {
+  navigateToList(): void {
     this.router.navigate(['/decks']);
   }
 
