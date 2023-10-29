@@ -23,8 +23,8 @@ import {PokemonTcgService} from "./pokemon-tcg.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {CreateComponent} from './decks/create/create.component';
-import { ErrorComponent } from './error/error.component';
-import { EditComponent } from './decks/edit/edit.component';
+import {ErrorComponent} from './error/error.component';
+import {EditComponent} from './decks/edit/edit.component';
 
 @NgModule({
   declarations: [
