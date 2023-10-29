@@ -1,7 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {StoreService} from "../store.service";
 import {Router} from "@angular/router";
-import {IgxDialogComponent, IgxGridComponent, IgxToastComponent, VerticalAlignment} from "igniteui-angular";
+import {
+  IgxDialogComponent,
+  IgxGridComponent,
+  IgxOverlayService,
+  IgxToastComponent,
+  VerticalAlignment
+} from "igniteui-angular";
 
 @Component({
   selector: 'app-decks',
@@ -11,14 +17,19 @@ import {IgxDialogComponent, IgxGridComponent, IgxToastComponent, VerticalAlignme
 export class DecksComponent implements OnInit {
   public decks: any = [];
   public deckData: any[] = [];
-  public itemToDelete: any = null;
+  public deckToDelete: any = null;
+  public deckToDetail: any = null;
 
   @ViewChild('grid', {static: true}) public grid: IgxGridComponent | undefined;
   @ViewChild('dialog', {static: true}) dialog: IgxDialogComponent | undefined;
   @ViewChild('toastSubmitSuccess', {read: IgxToastComponent}) public toastSubmitSuccess: IgxToastComponent | any;
+  @ViewChild('overlayContent', { static: true }) overlayContent!: TemplateRef<any>;
+  overlayId: string = '';
 
   constructor(private storeService: StoreService,
-              private router: Router) {
+              private router: Router,
+              private overlayService: IgxOverlayService,
+              private viewContainerRef: ViewContainerRef) {
   }
 
   ngOnInit(): void {
@@ -37,9 +48,10 @@ export class DecksComponent implements OnInit {
       return {
         deckKey: key,
         deckName: deck.deckName,
-        deckCards: deckCardsFormatted
+        deckCards: deck.deckCards,
+        deckCardsFormatted: deckCardsFormatted
       };
-    });
+    }).sort((a, b) => a.deckName.localeCompare(b.deckName));
   }
 
   navigateToCreate(): void {
@@ -51,22 +63,74 @@ export class DecksComponent implements OnInit {
   }
 
   openDeleteConfirmation(deck: any): void {
-    this.itemToDelete = deck;
+    this.deckToDelete = deck;
     this.dialog!.open();
   }
 
   deleteItem(): void {
-    this.storeService.deleteDeck(this.itemToDelete.deckKey);
+    this.storeService.deleteDeck(this.deckToDelete.deckKey);
     this.toastSubmitSuccess.positionSettings.verticalDirection = VerticalAlignment.Middle;
     this.toastSubmitSuccess.open();
     this.dialog!.close();
-    this.itemToDelete = null;
+    this.deckToDelete = null;
     this.getDecks();
   }
 
-  showDetails(id: any): void {
-    // Lógica para mostrar detalhes, com base no ID passado
+  showDetails(deck: any): void {
+    this.deckToDetail = deck;
+    this.openOverlay();
   }
 
+  openOverlay(): void {
+    const element = this.createOverlayElement();
+    const elementRef = new ElementRef(element);
+    this.overlayId = this.overlayService.attach(elementRef, {});
+    this.overlayService.show(this.overlayId);
+  }
 
+  createOverlayElement(): HTMLElement {
+    const element = document.createElement('div');
+    const view = this.viewContainerRef.createEmbeddedView(this.overlayContent);
+    element.appendChild(view.rootNodes[0]);
+
+    return element;
+  }
+
+  closeOverlay(): void {
+    if (this.overlayId) {
+      this.overlayService.detach(this.overlayId);
+      this.deckToDetail = null;
+    }
+  }
+
+  howManyCardsBySupertype(deck: any, supertype: string): number {
+    return deck.deckCards.filter((card: { supertype: string; }) => card.supertype === supertype).length;
+  }
+
+  howManyTypesInDeck(deck: any): any {
+    const uniqueTypes = new Set();
+
+    deck.deckCards.forEach((card: { types: any[]; }) => {
+      if (card.types && Array.isArray(card.types)) {
+        card.types.forEach(type => {
+          uniqueTypes.add(type);
+        });
+      }
+    });
+
+    const uniqueTypesCount = uniqueTypes.size;
+    const uniqueTypesList = Array.from(uniqueTypes).sort();
+
+    if (uniqueTypesList.length === 0) {
+      return 'Esse baralho não possui cores.'
+    }
+
+    if (uniqueTypesList.length > 1) {
+      const lastType = uniqueTypesList.pop();
+      const joinedTypes = uniqueTypesList.join(', ') + ' e ' + lastType;
+      return 'Esse baralho possui ' + uniqueTypesCount + ' cores, que são: ' + joinedTypes;
+    } else {
+      return 'Esse baralho possui 1 cor: ' + uniqueTypesList[0];
+    }
+  }
 }

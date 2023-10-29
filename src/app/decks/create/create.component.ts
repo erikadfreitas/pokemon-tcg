@@ -18,7 +18,7 @@ export class CreateComponent implements OnInit {
   public selectedCards: any[] = [];
   public loading: boolean = false;
   public showImage: boolean = false;
-  readonly MIN_NUMBER_OF_CARDS: number = 1;
+  readonly MIN_NUMBER_OF_CARDS: number = 24;
   readonly MAX_NUMBER_OF_CARDS: number = 60;
 
   @ViewChild('toastMinLetters', {read: IgxToastComponent}) public toastMinLetters: IgxToastComponent | any;

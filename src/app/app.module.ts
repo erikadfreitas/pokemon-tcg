@@ -16,10 +16,9 @@ import {
   IgxToggleDirective,
   IgxSelectGroupComponent,
   IgxBadgeComponent,
-  IgxDialogComponent,
+  IgxDialogComponent, IgxOverlayOutletDirective,
 } from "igniteui-angular";
 import {DecksComponent} from './decks/decks.component';
-import {CardsComponent} from './cards/cards.component';
 import {PokemonTcgService} from "./pokemon-tcg.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
@@ -31,7 +30,6 @@ import { EditComponent } from './decks/edit/edit.component';
   declarations: [
     AppComponent,
     DecksComponent,
-    CardsComponent,
     CreateComponent,
     ErrorComponent,
     EditComponent
@@ -53,7 +51,8 @@ import { EditComponent } from './decks/edit/edit.component';
     IgxToggleDirective,
     IgxSelectGroupComponent,
     IgxBadgeComponent,
-    IgxDialogComponent
+    IgxDialogComponent,
+    IgxOverlayOutletDirective
   ],
   providers: [
     PokemonTcgService

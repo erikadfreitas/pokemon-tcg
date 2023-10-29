@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {DecksComponent} from "./decks/decks.component";
-import {CardsComponent} from "./cards/cards.component";
 import {CreateComponent} from "./decks/create/create.component";
 import {ErrorComponent} from "./error/error.component";
 import {EditComponent} from "./decks/edit/edit.component";
@@ -12,7 +11,6 @@ const routes: Routes = [
   {path: 'decks/edit/:deckKey', component: EditComponent},
   {path: '', redirectTo: '/decks', pathMatch: 'full'},
   {path: '**', component: ErrorComponent}
-  // { path: 'cards', component: CardsComponent },
 ];
 
 @NgModule({
