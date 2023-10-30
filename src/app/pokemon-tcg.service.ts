@@ -8,7 +8,6 @@ import {BehaviorSubject, map, Observable} from 'rxjs';
 export class PokemonTcgService {
   public remoteData: BehaviorSubject<any[]>;
   private apiCardsUrl: string = 'https://api.pokemontcg.io/v2/cards';
-  private apiSupertypesUrl: string = 'https://api.pokemontcg.io/v2/supertypes';
 
   constructor(private http: HttpClient) {
     this.remoteData = new BehaviorSubject([]) as any;
@@ -17,9 +16,5 @@ export class PokemonTcgService {
   getCards(nameSearch: string): Observable<any> {
     let params = '?orderBy=name&q=name:"*' + nameSearch + '*"';
     return this.http.get(`${this.apiCardsUrl + params}`);
-  }
-
-  getSupertypes(): Observable<any> {
-    return this.http.get(this.apiSupertypesUrl);
   }
 }

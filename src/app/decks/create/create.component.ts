@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {PokemonTcgService} from "../../pokemon-tcg.service";
 import {IgxToastComponent, VerticalAlignment} from 'igniteui-angular';
 import {StoreService} from "../../store.service";
@@ -9,9 +9,9 @@ import {Router} from "@angular/router";
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss']
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
   public cards: any[] = [];
-  public supertypes: any[] = [];
+  public supertypes: any[] = ["Energy", "Pokémon", "Trainer"];
   public deckName: string = '';
   public searchTermValue: string = '';
   public lastSearchTermValue: string = '';
@@ -21,21 +21,18 @@ export class CreateComponent implements OnInit {
   readonly MIN_NUMBER_OF_CARDS: number = 24;
   readonly MAX_NUMBER_OF_CARDS: number = 60;
 
-  @ViewChild('toastMinLetters', {read: IgxToastComponent}) public toastMinLetters: IgxToastComponent | any;
-  @ViewChild('toastNoCards', {read: IgxToastComponent}) public toastNoCards: IgxToastComponent | any;
-  @ViewChild('toastMaxCardsWithTheSameName', {read: IgxToastComponent}) public toastMaxCardsWithTheSameName: IgxToastComponent | any;
-  @ViewChild('toastSubmitSuccess', {read: IgxToastComponent}) public toastSubmitSuccess: IgxToastComponent | any;
-  @ViewChild('toastSubmitWarning', {read: IgxToastComponent}) public toastSubmitWarning: IgxToastComponent | any;
-  @ViewChild('imageOverlay') imageOverlay: ElementRef | any;
-  @ViewChild('popupImage') popupImage: ElementRef | any;
+  @ViewChild('toastMinLetters', {read: IgxToastComponent}) public toastMinLetters!: IgxToastComponent;
+  @ViewChild('toastNoCards', {read: IgxToastComponent}) public toastNoCards!: IgxToastComponent;
+  @ViewChild('toastMaxCardsWithTheSameName', {read: IgxToastComponent}) public toastMaxCardsWithTheSameName!: IgxToastComponent;
+  @ViewChild('toastSubmitSuccess', {read: IgxToastComponent}) public toastSubmitSuccess!: IgxToastComponent;
+  @ViewChild('toastSubmitWarning', {read: IgxToastComponent}) public toastSubmitWarning!: IgxToastComponent;
+  @ViewChild('toastError', {read: IgxToastComponent}) public toastError!: IgxToastComponent;
+  @ViewChild('imageOverlay') imageOverlay!: ElementRef;
+  @ViewChild('popupImage') popupImage!: ElementRef;
 
   constructor(private pokemonService: PokemonTcgService,
               private storeService: StoreService,
               private router: Router) {
-  }
-
-  ngOnInit(): void {
-    this.loadSupertypes();
   }
 
   loadCards(): void {
@@ -43,28 +40,29 @@ export class CreateComponent implements OnInit {
       this.cards = [];
       this.loading = true;
       this.lastSearchTermValue = this.searchTermValue;
-
-      this.pokemonService.getCards(this.searchTermValue).subscribe(data => {
-        const newCards = data.data.filter((card: {
-          id: any;
-        }) => !this.selectedCards.some(selectedCard => selectedCard.id === card.id));
-        this.cards.push(...newCards);
-        if (data.data.length === 0) {
-          this.toastNoCards.positionSettings.verticalDirection = VerticalAlignment.Middle;
-          this.toastNoCards.open();
+      this.pokemonService.getCards(this.searchTermValue).subscribe({
+          next: (data) => {
+            const newCards = data.data.filter((card: {
+              id: any;
+            }) => !this.selectedCards.some(selectedCard => selectedCard.id === card.id));
+            this.cards.push(...newCards);
+            if (data.data.length === 0) {
+              this.toastNoCards.positionSettings.verticalDirection = VerticalAlignment.Middle;
+              this.toastNoCards.open();
+            }
+          },
+          error: () => {
+            this.toastError.positionSettings.verticalDirection = VerticalAlignment.Middle;
+            this.toastError.open('Erro ao buscar cartas Pokémon. Tente novamente!');
+            this.loading = false;
+          },
+          complete: () => this.loading = false
         }
-        this.loading = false;
-      });
+      );
     } else {
       this.toastMinLetters.positionSettings.verticalDirection = VerticalAlignment.Middle;
       this.toastMinLetters.open();
     }
-  }
-
-  loadSupertypes(): void {
-    this.pokemonService.getSupertypes().subscribe(data => {
-      this.supertypes = data.data;
-    })
   }
 
   addToSelectedCards(card: any): void {
